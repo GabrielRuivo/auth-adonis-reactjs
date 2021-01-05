@@ -7,8 +7,11 @@ import api from '../../services/api';
 
 function Dashboard() {
   const [data, setData] = useContext(AuthContext)
-  
+  /* const username = localStorage.getItem('@token', user) */
     const history = useHistory();
+    const userData = localStorage.getItem('@token')
+    const userName = JSON.parse(userData)
+    console.log('LS DASHBOARD', userName)
 
     async function handleLogout() {
         try {
@@ -27,7 +30,7 @@ function Dashboard() {
 
     return (
         <div>
-          <h2>Dashboard Bem-vindo </h2>
+          <h2>Dashboard Bem-vindo {userName.user}</h2>
           <button onClick={handleLogout} >logout</button>
         </div>
     )

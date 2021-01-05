@@ -23,7 +23,7 @@ const FormForgotPassword = ({ handleSubmit  }) => (
                 <ErrorMessage component="span" name="email" />
             </div>
 
-            <button type="submit">Reset password</button>
+            <button type="submit">Send E_Mail</button>
         </FormikForm>
     </Formik>
 )

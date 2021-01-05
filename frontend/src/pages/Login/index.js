@@ -19,10 +19,11 @@ function Login() {
         password: value.password
       }).then(res => {
         const response = res.data;
-        const token = response.token;
-        localStorage.setItem('@token', JSON.stringify(token))
+        
+        localStorage.setItem('@token', JSON.stringify(response))
         setData(localStorage.getItem('@token'))
-        console.log(response)
+        console.log('RESPONSE:', response)
+        
       })
       console.log('logado com sucesso !')
       history.push('/dashboard')

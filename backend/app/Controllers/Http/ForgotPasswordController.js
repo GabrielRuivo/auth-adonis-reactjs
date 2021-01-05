@@ -1,9 +1,9 @@
 'use strict'
 
-const crypto = require('crypto')
-const moment = require('moment')
 const User = use('App/Models/User')
 const Mail = use('Mail')
+const crypto = require('crypto')
+const moment = require('moment')
 
 class ForgotPasswordController {
   async store ({ request, response }) {
@@ -16,24 +16,24 @@ class ForgotPasswordController {
 
       await user.save()
 
-      await Mail.send(
-        ['emails.forgot_password'], /* qual template de email */
+      await Mail.send(['emails.forgot_password'],
         {
           email,
           token: user.token,
-          link: `${request.input('redirect_url')}?token=${user.token}`
-        }, /* quais parametros enviar pro template de email */
+          link: `http://localhost:3000/change-password/${user.token}`
+        },
         message => {
           message
             .to(user.email)
-            .from('gabriel-ruivo@hotmail.com', 'Gabriel | Developer front-end')
+            .from('gabriel-ruivo@hotmail.com', 'Dev Front-end | Gabriel')
             .subject('Recuperação de senha')
-        }
-      )
+        })
+
+      return user.token
     } catch (err) {
-      return response.status(err.status).send(
-        { error: { message: 'Algo não deu certo, esse e-mail existe ?' } }
-      )
+      return response
+        .status(err.status)
+        .send({ error: { message: 'Algo deu errado, esse email não existe.' } })
     }
   }
 
@@ -50,7 +50,7 @@ class ForgotPasswordController {
       if (tokenExpired) {
         return response
           .status(401)
-          .send({ error: { message: 'O token de recuperação está expirado' } })
+          .send({ error: { message: 'Token expirado' } })
       }
 
       user.token = null
@@ -61,7 +61,7 @@ class ForgotPasswordController {
     } catch (err) {
       return response
         .status(err.status)
-        .send({ error: { message: 'Algo deu errado ao resetar sua senha' } })
+        .send({ error: { message: 'Algo deu errado, esse email existe?' } })
     }
   }
 }
